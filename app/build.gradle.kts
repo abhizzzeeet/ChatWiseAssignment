@@ -51,4 +51,15 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.androidx.recyclerview)
     implementation(libs.picasso)
+
+    implementation(libs.glide)
+
+    implementation(libs.androidx.cardview)
+    implementation("me.zhanghai.android.materialratingbar:library:1.4.0")
+
+
+
+
+
+
 }

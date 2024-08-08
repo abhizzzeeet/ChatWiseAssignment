@@ -1,14 +1,13 @@
 package com.example.chatwiseassignment.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
+import java.io.Serializable
+
 data class ProductsResponse(
     val products: List<Product>
-) : Parcelable
+) : Serializable
 
-@Parcelize
+
 data class Product(
     val id: Int,
     val title: String,
@@ -32,31 +31,31 @@ data class Product(
     val meta: Meta,
     val images: List<String>,
     val thumbnail: String
-) : Parcelable
+) : Serializable
 
-@Parcelize
+
 data class Dimensions(
     val width: Double,
     val height: Double,
     val depth: Double
-) : Parcelable
+) : Serializable
 
-@Parcelize
+
 data class Review(
     val rating: Int,
     val comment: String,
     val date: String,
     val reviewerName: String,
     val reviewerEmail: String
-) : Parcelable
+) : Serializable
 
-@Parcelize
+
 data class Meta(
     val createdAt: String,
     val updatedAt: String,
     val barcode: String,
     val qrCode: String
-) : Parcelable
+) : Serializable
 
 
 

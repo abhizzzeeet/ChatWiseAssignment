@@ -1,7 +1,9 @@
 package com.example.chatwiseassignment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.chatwiseassignment.fragments.ProductDetailsFragment
-import com.example.chatwiseassignment.interfaces.onProductClickListener
+
 import com.example.chatwiseassignment.models.Product
 import com.example.chatwiseassignment.models.ProductsResponse
 import com.example.chatwiseassignment.recyclerView.ProductsListAdapter
@@ -24,7 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ProductsActivity : AppCompatActivity(),onProductClickListener {
+class ProductsActivity : AppCompatActivity() {
 
     private lateinit var adapter : ProductsListAdapter
     private val items = mutableListOf<Product>()
@@ -36,7 +37,12 @@ class ProductsActivity : AppCompatActivity(),onProductClickListener {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view_products_list)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = ProductsListAdapter(items,this)
+        adapter = ProductsListAdapter(items){ product ->
+            val intent = Intent(this, ProductDetailsActivity::class.java).apply {
+                putExtra("PRODUCT_DATA", product)
+            }
+            startActivity(intent)
+        }
         recyclerView.adapter = adapter
 
         val productsApi = RetrofitHelper.getInstance().create(ProductsApi::class.java)
@@ -57,20 +63,14 @@ class ProductsActivity : AppCompatActivity(),onProductClickListener {
                 Log.e("ERROR","${e.message}")
             }
         }
-    }
-    override fun onProductClick(product: Product){
-        Log.d("ProductsActivity","onProductClick arrived")
-        val fragment = ProductDetailsFragment().apply {
-            arguments = Bundle().apply {
-                putParcelable("product", product) // Pass the product data
-            }
+        val productsTextView= findViewById<TextView>(R.id.products_list_text)
+
+        productsTextView.setOnClickListener{
+            Log.d("ProductsActivity","Product TextView Clicked")
+//            val intent = Intent(this, ProductsDetailsActivity::class.java)
+//            startActivity(intent)
         }
-        Log.d("ProductsActivity","Replacing fragment")
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.products_activity, fragment) // Replace the fragment in the container
-            .addToBackStack(null) // Optional: Add to back stack to handle back navigation
-            .commit()
-        Log.d("ProductsActivity","Fragment transaction committed")
     }
+
 
 }
